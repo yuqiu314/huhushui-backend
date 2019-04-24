@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>未确认的今夜订单</title>
+<link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/css/userwaitbids.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <form role="form" class="form-signin">
+        <div class="form-group">
+            <div class="row">
+                <label>请求发出：</label><span id="d_n" d_n="{{order['d_n']}}"></span>
+            </div>
+            <div class="row">
+                <label>价格水准：</label><span>{{order['u_p']}}元</span>
+                <label>房型：</label><span>{{order['u_r']}}</span>
+            </div>
+            <div class="row">
+                <label>搜索半径：</label><span>{{order['dis']}}公里</span>
+                <input type="button" class="btn btn-sm btn-warning" id="btnCancel" value="撤销订单" orderid="{{order['_id']}}"/>
+            </div>
+        </div>
+        <p id="info"></p>
+        {% for bid in bids %}
+        <div class="form-group">
+            <div class="row">
+                <label>酒店：</label>
+                <a href="/tor/hotel/info?hotel_id={{bid['hotel_id']}}">{{bid['hotel_name']}}</a>
+                <a href="/path.html?slat={{order['lat']}}&slng={{order['lng']}}&elat={{bid['hotel_lat']}}&elng={{bid['hotel_lng']}}">[查看位置]</a>
+            </div>
+            <div class="row">
+                <label>酒店报价：</label><span>{{bid['price']}}</span>
+                <input type="button" class="btn btn-sm btn-primary datetime" name="btnConfirm" value="确认交易" bidid="{{bid['_id']}}" biddn="{{bid['d_n']}}"/>
+            </div>
+        </div>
+        {% end %}
+    </form>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">请输入您的联系电话</h4>
+                </div>
+                <div class="modal-body">
+                    <input class="form-control" type="text" id="inputPhone"></input>
+                    <input type="button" class="btn btn-block btn-info" id="btnValid" value="发送验证码">
+                </div>
+                <div class="modal-footer">
+                    <span>填写验证码</span>
+                    <input class="form-control" type="text" id="inputCode"></input>
+                    <input type="button" class="btn btn-block btn-info" id="btnPhone" value="确认">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="//cdn.bootcss.com/sockjs-client/1.0.0/sockjs.min.js"></script>
+<script src="/static/js/userwaitbids.js"></script>
+</body>
+</html>
